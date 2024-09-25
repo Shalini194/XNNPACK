@@ -43,6 +43,10 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
+      - name: Setup SDE binaries
+        uses: petarpetrovt/setup-sde@v2.4
+        with:
+          sdeVersion: 9.33.0
       - name: Run tests
         if: ${{ inputs.run-tests }}
         run: ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
