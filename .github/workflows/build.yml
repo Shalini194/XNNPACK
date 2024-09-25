@@ -13,7 +13,6 @@ on:
         default: false
         required: false
         type: boolean
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}-${{ inputs.update-caches }}
