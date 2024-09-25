@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   cmake-windows-x64:
-    runs-on: windows-2022-32core
+    runs-on: windows-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
         run: ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
   cmake-windows-x86:
-    runs-on: windows-2022-32core
+    runs-on: windows-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
