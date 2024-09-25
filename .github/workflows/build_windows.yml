@@ -49,6 +49,6 @@ jobs:
           CXXFLAGS: "/UNDEBUG"
       - name: Run tests
         if: ${{ inputs.run-tests }}
-        run: ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
+        run: ${{ github.workspace }}/.output/sde-temp-files/sde ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
   
