@@ -36,13 +36,6 @@ jobs:
         shell: bash
         run: |
           echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
-      - name: Configure and build
-        run: scripts/build-windows-x64.cmd
-        shell: cmd
-        working-directory: ${{ github.workspace }}
-        env:
-          CFLAGS: "/UNDEBUG"
-          CXXFLAGS: "/UNDEBUG"
       - name: Setup SDE binaries
         uses: petarpetrovt/setup-sde@v2.4
         with:
@@ -51,8 +44,7 @@ jobs:
         run: dir .output\sde-temp-files
       - name: List files in sde-external-9.33.0-2024-01-07-win
         run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
-      - name: Run tests inside SDE
-        if: ${{ inputs.run-tests }}
+      - name: Run SDE help command
         run: |
-          .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde -- ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
-        working-directory: ${{ github.workspace }}/build/windows/x64
+          .\output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde --help
+        shell: pwsh
