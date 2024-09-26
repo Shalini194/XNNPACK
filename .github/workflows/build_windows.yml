@@ -42,4 +42,5 @@ jobs:
           sdeVersion: 9.33.0
       - name: List files in .output/sde-temp-files
         run: dir .output\sde-temp-files
-  
+      - name: List files in sde-external-9.33.0-2024-01-07-win
+        run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
