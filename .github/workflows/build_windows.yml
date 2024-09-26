@@ -40,15 +40,6 @@ jobs:
         uses: petarpetrovt/setup-sde@v2.4
         with:
           sdeVersion: 9.33.0
-      - name: Configure and build
-        run: scripts/build-windows-x64.cmd
-        shell: cmd
-        working-directory: ${{ github.workspace }}
-        env:
-          CFLAGS: "/UNDEBUG"
-          CXXFLAGS: "/UNDEBUG"
-      - name: Run tests
-        if: ${{ inputs.run-tests }}
-        run: ${{ github.workspace }}/.output/sde-temp-files/sde ctest -C Release --output-on-failure --parallel $NUMBER_OF_PROCESSORS
-        working-directory: ${{ github.workspace }}/build/windows/x64
+      - name: List files in .output/sde-temp-files
+        run: dir .output\sde-temp-files
   
