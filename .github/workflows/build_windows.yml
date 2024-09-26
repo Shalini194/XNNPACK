@@ -54,6 +54,6 @@ jobs:
       - name: Run tests inside SDE
         if: ${{ inputs.run-tests }}
         run: |
-          & .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde -- ctest -C Release --output-on-failure --parallel $Env:NUMBER_OF_PROCESSORS
+          & "${{ github.workspace }}\.output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde.exe" -- ctest -C Release --output-on-failure --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
         shell: pwsh
