@@ -36,6 +36,13 @@ jobs:
         shell: bash
         run: |
           echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
       - name: Setup SDE binaries
         uses: petarpetrovt/setup-sde@v2.4
         with:
