@@ -46,5 +46,5 @@ jobs:
         run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
       - name: Run SDE help command
         run: |
-          & "${{ github.workspace }}\.output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde" --help
+          & .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde --help
         shell: pwsh
