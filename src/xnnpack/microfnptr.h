@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "xnnpack.h"
 #include "xnnpack/common.h"
 #include "xnnpack/microparams.h"
 
@@ -337,6 +338,18 @@ typedef void (*xnn_qp8_f32_qc4w_gemm_minmax_ukernel_fn)(
     size_t dst_stride_row,
     size_t dst_stride_col,
     union xnn_f32_minmax_params
+        minmax_params[XNN_RESTRICT XNN_MIN_ELEMENTS(1)]);
+
+typedef void (*xnn_qp8_f32_qb4w_gemm_minmax_ukernel_fn)(
+    size_t m,
+    size_t n,
+    size_t k,
+    const void* lhs_packed,
+    const void* rhs_packed,
+    float* dst,
+    size_t dst_stride_row,
+    size_t dst_stride_col,
+    const struct xnn_f32_qb4w_minmax_params 
         minmax_params[XNN_RESTRICT XNN_MIN_ELEMENTS(1)]);
 
 // GEMMINC: GEMM INCremental with Min+Max activation
@@ -2506,6 +2519,12 @@ typedef void (*xnn_f32_vscaleextexp_ukernel_fn)(
 
 /***************** Microkernel parameter initializer pointers ****************/
 
+typedef size_t (*xnn_init_binary_params_fn)(
+  union xnn_binary_uparams* uparams,
+  const struct xnn_quantization_params* a_quantization,
+  const struct xnn_quantization_params* b_quantization,
+  const struct xnn_quantization_params* output_quantization);
+
 typedef size_t (*xnn_init_f16_qs8_cvt_params_fn)(
   struct xnn_f16_qs8_cvt_params params[XNN_MIN_ELEMENTS(1)],
   xnn_float16 scale,
@@ -2638,41 +2657,27 @@ typedef void (*xnn_update_f16_gavgpool_scalar_params_fn)(
 
 typedef size_t (*xnn_init_qs8_add_minmax_params_fn)(
   struct xnn_qs8_add_minmax_params params[XNN_MIN_ELEMENTS(1)],
-  int8_t input_x_zero_point,
-  int8_t input_y_zero_point,
-  int8_t output_zero_point,
-  float input_x_output_scale,
-  float input_y_output_scale,
-  int8_t output_min,
-  int8_t output_max);
+  const struct xnn_quantization_params* a_quantization,
+  const struct xnn_quantization_params* b_quantization,
+  const struct xnn_quantization_params* output_quantization);
 
 typedef size_t (*xnn_init_qu8_add_minmax_params_fn)(
   struct xnn_qu8_add_minmax_params params[XNN_MIN_ELEMENTS(1)],
-  uint8_t input_x_zero_point,
-  uint8_t input_y_zero_point,
-  uint8_t output_zero_point,
-  float input_x_output_scale,
-  float input_y_output_scale,
-  uint8_t output_min,
-  uint8_t output_max);
+  const struct xnn_quantization_params* a_quantization,
+  const struct xnn_quantization_params* b_quantization,
+  const struct xnn_quantization_params* output_quantization);
 
 typedef size_t (*xnn_init_qs8_mul_minmax_params_fn)(
   union xnn_qs8_mul_minmax_params params[XNN_MIN_ELEMENTS(1)],
-  int8_t input_x_zero_point,
-  int8_t input_y_zero_point,
-  int8_t output_zero_point,
-  float product_output_scale,
-  int8_t output_min,
-  int8_t output_max);
+  const struct xnn_quantization_params* a_quantization,
+  const struct xnn_quantization_params* b_quantization,
+  const struct xnn_quantization_params* output_quantization);
 
 typedef size_t (*xnn_init_qu8_mul_minmax_params_fn)(
   union xnn_qu8_mul_minmax_params params[XNN_MIN_ELEMENTS(1)],
-  uint8_t input_x_zero_point,
-  uint8_t input_y_zero_point,
-  uint8_t output_zero_point,
-  float product_output_scale,
-  uint8_t output_min,
-  uint8_t output_max);
+  const struct xnn_quantization_params* a_quantization,
+  const struct xnn_quantization_params* b_quantization,
+  const struct xnn_quantization_params* output_quantization);
 
 typedef size_t (*xnn_init_bf16_default_params_fn)(
   struct xnn_bf16_default_params params[XNN_MIN_ELEMENTS(1)]);
@@ -2991,6 +2996,10 @@ struct xnn_hmp_qp8gemm_ukernel {
   xnn_qp8_f32_qc4w_gemm_minmax_ukernel_fn function[XNN_MAX_UARCH_TYPES];
 };
 
+struct xnn_hmp_qp8gemm_bl_ukernel {
+  xnn_qp8_f32_qb4w_gemm_minmax_ukernel_fn function[XNN_MAX_UARCH_TYPES];
+};
+
 // Largest GEMM/IGEMM MR used in init.c is 16 (x86 AVX512AMX).
 // Largest GEMM/IGEMM MR is 8 in e2e benchmarks.
 #define XNN_MAX_MR 16
@@ -3001,10 +3010,10 @@ struct gemm_fused_ukernels {
     struct xnn_hmp_dqgemm_ukernel dqgemm[XNN_MAX_MR];
     struct xnn_hmp_qp8gemm_ukernel qp8gemm[XNN_MAX_MR];
     struct xnn_hmp_dqgemm_bl_ukernel dqgemm_bl[XNN_MAX_MR];
+    struct xnn_hmp_qp8gemm_bl_ukernel qp8gemm_bl[XNN_MAX_MR];
   };
   union {
     struct xnn_hmp_igemm_ukernel igemm[XNN_MAX_MR];
     struct xnn_hmp_dqigemm_ukernel dqigemm[XNN_MAX_MR];
   };
 };
-

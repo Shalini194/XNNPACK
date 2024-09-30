@@ -10,6 +10,7 @@ $SIMD_TILE = BATCH_TILE // 8
 
 #include <immintrin.h>
 
+#include "xnnpack/intrinsics-polyfill.h"
 #include "xnnpack/raddstoreexpminusmax.h"
 
 

@@ -32,22 +32,22 @@ SET(PROD_AVX_MICROKERNEL_SRCS
   src/f32-rminmax/gen/f32-rmax-avx-u32-acc4.c
   src/f32-rminmax/gen/f32-rminmax-avx-u32-acc4.c
   src/f32-rsum/gen/f32-rsum-avx-u32-acc4.c
-  src/f32-vbinary/gen/f32-vadd-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vaddc-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vdiv-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vdivc-minmax-avx-u16.c
+  src/f32-vbinary/gen/f32-vadd-avx-u16.c
+  src/f32-vbinary/gen/f32-vaddc-avx-u16.c
+  src/f32-vbinary/gen/f32-vdiv-avx-u16.c
+  src/f32-vbinary/gen/f32-vdivc-avx-u16.c
   src/f32-vbinary/gen/f32-vmax-avx-u16.c
   src/f32-vbinary/gen/f32-vmaxc-avx-u16.c
   src/f32-vbinary/gen/f32-vmin-avx-u16.c
   src/f32-vbinary/gen/f32-vminc-avx-u16.c
-  src/f32-vbinary/gen/f32-vmul-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vmulc-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vrdivc-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vrsubc-minmax-avx-u16.c
+  src/f32-vbinary/gen/f32-vmul-avx-u16.c
+  src/f32-vbinary/gen/f32-vmulc-avx-u16.c
+  src/f32-vbinary/gen/f32-vrdivc-avx-u16.c
+  src/f32-vbinary/gen/f32-vrsubc-avx-u16.c
   src/f32-vbinary/gen/f32-vsqrdiff-avx-u16.c
   src/f32-vbinary/gen/f32-vsqrdiffc-avx-u16.c
-  src/f32-vbinary/gen/f32-vsub-minmax-avx-u16.c
-  src/f32-vbinary/gen/f32-vsubc-minmax-avx-u16.c
+  src/f32-vbinary/gen/f32-vsub-avx-u16.c
+  src/f32-vbinary/gen/f32-vsubc-avx-u16.c
   src/f32-vclamp/gen/f32-vclamp-avx-u16.c
   src/f32-vcopysign/gen/f32-vcopysign-avx.c
   src/f32-vcopysign/gen/f32-vcopysignc-avx.c
@@ -184,18 +184,6 @@ SET(NON_PROD_AVX_MICROKERNEL_SRCS
   src/f32-qu8-vcvt/gen/f32-qu8-vcvt-avx-u8.c
   src/f32-qu8-vcvt/gen/f32-qu8-vcvt-avx-u16.c
   src/f32-qu8-vcvt/gen/f32-qu8-vcvt-avx-u24.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u4.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u8-acc2.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u8.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u12-acc2.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u12-acc3.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u12.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u16-acc2.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u16-acc4.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u16.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u20-acc2.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u20-acc5.c
-  src/f32-raddstoreexpminusmax/gen/f32-raddstoreexpminusmax-avx-rr2-p5-u20.c
   src/f32-rdsum/gen/f32-rdsum-7p7x-minmax-avx-c16.c
   src/f32-rdsum/gen/f32-rdsum-7p7x-minmax-avx-c64.c
   src/f32-rminmax/gen/f32-rmax-avx-u8.c
@@ -215,28 +203,28 @@ SET(NON_PROD_AVX_MICROKERNEL_SRCS
   src/f32-rsum/gen/f32-rsum-avx-u16-acc2.c
   src/f32-rsum/gen/f32-rsum-avx-u24-acc3.c
   src/f32-rsum/gen/f32-rsum-avx-u32-acc2.c
-  src/f32-vbinary/gen/f32-vadd-minmax-avx-u8.c
-  src/f32-vbinary/gen/f32-vaddc-minmax-avx-u8.c
-  src/f32-vbinary/gen/f32-vdiv-minmax-avx-u8.c
-  src/f32-vbinary/gen/f32-vdivc-minmax-avx-u8.c
+  src/f32-vbinary/gen/f32-vadd-avx-u8.c
+  src/f32-vbinary/gen/f32-vaddc-avx-u8.c
+  src/f32-vbinary/gen/f32-vdiv-avx-u8.c
+  src/f32-vbinary/gen/f32-vdivc-avx-u8.c
   src/f32-vbinary/gen/f32-vmax-avx-u8.c
   src/f32-vbinary/gen/f32-vmaxc-avx-u8.c
   src/f32-vbinary/gen/f32-vmin-avx-u8.c
   src/f32-vbinary/gen/f32-vminc-avx-u8.c
-  src/f32-vbinary/gen/f32-vmul-minmax-avx-u8.c
-  src/f32-vbinary/gen/f32-vmulc-minmax-avx-u8.c
+  src/f32-vbinary/gen/f32-vmul-avx-u8.c
+  src/f32-vbinary/gen/f32-vmulc-avx-u8.c
   src/f32-vbinary/gen/f32-vprelu-avx-u8.c
   src/f32-vbinary/gen/f32-vprelu-avx-u16.c
   src/f32-vbinary/gen/f32-vpreluc-avx-u8.c
   src/f32-vbinary/gen/f32-vpreluc-avx-u16.c
-  src/f32-vbinary/gen/f32-vrdivc-minmax-avx-u8.c
+  src/f32-vbinary/gen/f32-vrdivc-avx-u8.c
   src/f32-vbinary/gen/f32-vrpreluc-avx-u8.c
   src/f32-vbinary/gen/f32-vrpreluc-avx-u16.c
-  src/f32-vbinary/gen/f32-vrsubc-minmax-avx-u8.c
+  src/f32-vbinary/gen/f32-vrsubc-avx-u8.c
   src/f32-vbinary/gen/f32-vsqrdiff-avx-u8.c
   src/f32-vbinary/gen/f32-vsqrdiffc-avx-u8.c
-  src/f32-vbinary/gen/f32-vsub-minmax-avx-u8.c
-  src/f32-vbinary/gen/f32-vsubc-minmax-avx-u8.c
+  src/f32-vbinary/gen/f32-vsub-avx-u8.c
+  src/f32-vbinary/gen/f32-vsubc-avx-u8.c
   src/f32-vclamp/gen/f32-vclamp-avx-u8.c
   src/f32-velu/gen/f32-velu-avx-rr2-lut4-p4-perm-u8.c
   src/f32-velu/gen/f32-velu-avx-rr2-lut4-p4-perm-u16.c
