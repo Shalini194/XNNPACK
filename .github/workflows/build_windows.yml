@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   cmake-windows-x64:
-    runs-on: windows-latest
+    runs-on: windows-2022-32core
     timeout-minutes: 60
     steps:
       - name: Check processor architecture
