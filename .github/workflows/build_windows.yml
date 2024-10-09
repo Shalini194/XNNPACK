@@ -43,14 +43,21 @@ jobs:
       #  env:
       #    CFLAGS: "/UNDEBUG"
       #    CXXFLAGS: "/UNDEBUG"
-      - name: Setup SDE binaries
-        uses: petarpetrovt/setup-sde@v2.4
-        with:
-          sdeVersion: 9.44.0
-      - name: List files in .output/sde-temp-files
-        run: dir .output\sde-temp-files
-      - name: List files in sde-external-9.44.0-2024-08-22-win
-        run: dir .output\sde-temp-files\sde-external-9.44.0-2024-08-22-win
+      #- name: Setup SDE binaries
+      #  uses: petarpetrovt/setup-sde@v2.4
+      #  with:
+      #    sdeVersion: 9.33.0
+      #- name: List files in .output/sde-temp-files
+      #  run: dir .output\sde-temp-files
+      #- name: List files in sde-external-9.33.0-2024-01-07-win
+      #  run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
+      - name: Download SDE using wget
+        run: |
+          wget https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+
+      - name: Extract SDE
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
       #  run: |
