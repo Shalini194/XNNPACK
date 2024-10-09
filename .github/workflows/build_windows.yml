@@ -53,7 +53,7 @@ jobs:
       #  run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
       - name: Download SDE using curl 
         run: |
-          curl -L -o https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
 
       - name: Extract SDE
         run: |
