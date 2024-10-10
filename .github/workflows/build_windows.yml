@@ -54,11 +54,20 @@ jobs:
       - name: Download SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-
+      - name: Show current directory before extraction
+        shell: bash
+        run: |
+          pwd
+          ls -lah
       - name: Extract SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Show extracted files
+        shell: bash
+        run: |
+          ls -lah
+        
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
       #  run: |
