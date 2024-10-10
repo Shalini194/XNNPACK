@@ -67,7 +67,8 @@ jobs:
         shell: bash
         run: |
           ls -lah
-        
+      - name: List files in sde-external-9.44.0-2024-08-22-win
+        run: dir sde-external-9.44.0-2024-08-22-win 
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
       #  run: |
