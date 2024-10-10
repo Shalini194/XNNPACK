@@ -43,14 +43,6 @@ jobs:
       #  env:
       #    CFLAGS: "/UNDEBUG"
       #    CXXFLAGS: "/UNDEBUG"
-      #- name: Setup SDE binaries
-      #  uses: petarpetrovt/setup-sde@v2.4
-      #  with:
-      #    sdeVersion: 9.33.0
-      #- name: List files in .output/sde-temp-files
-      #  run: dir .output\sde-temp-files
-      #- name: List files in sde-external-9.33.0-2024-01-07-win
-      #  run: dir .output\sde-temp-files\sde-external-9.33.0-2024-01-07-win
       - name: Download SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
@@ -71,15 +63,15 @@ jobs:
         run: dir sde-external-9.44.0-2024-08-22-win 
       #- name: Run SDE --help command
       #  run: |
-      #    D:\a\XNNPACK\XNNPACK\sde-external-9.44.0-2024-08-22-win\sde.exe --help
+      #    ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe --help
       #  shell: pwsh
       - name: Run SDE -help-long command
         run: |
-          D:\a\XNNPACK\XNNPACK\sde-external-9.44.0-2024-08-22-win\sde.exe -help-long
+          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help-long
         shell: pwsh
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
       #  run: |
-      #    & "${{ github.workspace }}\.output\sde-temp-files\sde-external-9.33.0-2024-01-07-win\sde.exe" -- ctest -C Release --output-on-failure --parallel $Env:NUMBER_OF_PROCESSORS
+      #    & "${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe" -- ctest -C Release --output-on-failure --parallel $Env:NUMBER_OF_PROCESSORS
       #  working-directory: ${{ github.workspace }}/build/windows/x64
       #  shell: pwsh
