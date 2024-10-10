@@ -56,6 +56,7 @@ jobs:
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
 
       - name: Extract SDE
+        shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       #- name: Run tests inside SDE
