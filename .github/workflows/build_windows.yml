@@ -71,11 +71,11 @@ jobs:
         run: dir sde-external-9.44.0-2024-08-22-win 
       - name: Run SDE --help command
         run: |
-          sde-external-9.33.0-2024-01-07-win\sde.exe --help
+          D:\a\XNNPACK\XNNPACK\sde-external-9.44.0-2024-08-22-win\sde.exe --help
         shell: pwsh
       - name: Run SDE -help-long command
         run: |
-          sde-external-9.33.0-2024-01-07-win\sde.exe -help-long
+          D:\a\XNNPACK\XNNPACK\sde-external-9.44.0-2024-08-22-win\sde.exe -help-long
         shell: pwsh
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
