@@ -40,6 +40,8 @@ class BatchMatrixMultiplyTestBase : public ::testing::Test {
         std::numeric_limits<uint8_t>::max());
     auto shape_dist =
         std::uniform_int_distribution<size_t>(4, XNN_MAX_TENSOR_DIMS);
+    auto broadcast_dist =
+        std::uniform_int_distribution<size_t>(0, 4);
     dim_dist = std::uniform_int_distribution<size_t>(5, 15);
 
     // input1: B x G x M x K
@@ -54,12 +56,22 @@ class BatchMatrixMultiplyTestBase : public ::testing::Test {
     k = input1_dims.back();
     n = dim_dist(rng);
     input2_dims = input1_dims;
+    output_dims = input1_dims;
+
     input2_dims[num_input_dims - 2] = k;
     input2_dims[num_input_dims - 1] = n;
-    input2_t_dims = input1_dims;
-    input2_t_dims[num_input_dims - 2] = n;
 
-    output_dims = input1_dims;
+    for (size_t i = 0; i + 2 < num_input_dims; ++i) {
+      if (broadcast_dist(rng) == 0) {
+        input1_dims[i] = 1;
+      } else if (broadcast_dist(rng) == 0) {
+        input2_dims[i] = 1;
+      }
+    }
+
+    input2_t_dims = input2_dims;
+    std::swap(input2_t_dims[num_input_dims - 2], input2_t_dims[num_input_dims - 1]);
+
     output_dims[num_input_dims - 2] = m;
     output_dims[num_input_dims - 1] = n;
 
@@ -256,8 +268,6 @@ TEST_F(BatchMatrixMultiplyTestF16, matches_operator_api)
 
   std::generate(input1.begin(), input1.end(), [&]() { return f32dist(rng); });
   std::generate(input2.begin(), input2.end(), [&]() { return f32dist(rng); });
-  std::fill(operator_output.begin(), operator_output.end(), std::nanf(""));
-  std::fill(subgraph_output.begin(), subgraph_output.end(), std::nanf(""));
 
   // Call operator API.
   const xnn_status status = xnn_create_batch_matrix_multiply_nc_f16(/*flags=*/0, &op);
@@ -345,8 +355,6 @@ TEST_F(BatchMatrixMultiplyTestF32, matches_operator_api)
 
   std::generate(input1.begin(), input1.end(), [&]() { return f32dist(rng); });
   std::generate(input2.begin(), input2.end(), [&]() { return f32dist(rng); });
-  std::fill(operator_output.begin(), operator_output.end(), nanf(""));
-  std::fill(subgraph_output.begin(), subgraph_output.end(), nanf(""));
 
   // Call operator API.
   const xnn_status status = xnn_create_batch_matrix_multiply_nc_f32(/*flags=*/0, &op);
@@ -434,8 +442,6 @@ TEST_F(BatchMatrixMultiplyTestF32, matches_operator_api_transposed)
 
   std::generate(input1.begin(), input1.end(), [&]() { return f32dist(rng); });
   std::generate(input2.begin(), input2.end(), [&]() { return f32dist(rng); });
-  std::fill(operator_output.begin(), operator_output.end(), nanf(""));
-  std::fill(subgraph_output.begin(), subgraph_output.end(), nanf(""));
 
   // Call operator API.
   const xnn_status status = xnn_create_batch_matrix_multiply_nc_f32(/*flags=*/XNN_FLAG_TRANSPOSE_B, &op);
@@ -573,8 +579,6 @@ TEST_F(BatchMatrixMultiplyTestQD8ToF32, matches_operator_api) {
       NumElements(input2_dims) / input2_dims[input2_dims.size() - 2],
       1.0f / std::numeric_limits<int8_t>::max());
   std::generate(input2.begin(), input2.end(), [&]() { return i8dist(rng); });
-  std::fill(operator_output.begin(), operator_output.end(), nanf(""));
-  std::fill(subgraph_output.begin(), subgraph_output.end(), nanf(""));
 
   // Create the dynamically quantized input data with the corresponding
   // `quantization_params`.
