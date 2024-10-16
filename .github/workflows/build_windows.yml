@@ -13,6 +13,11 @@ on:
         default: false
         required: false
         type: boolean
+      instruction-set:
+        description: 'Instruction set'
+        default: "SSE"
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}-${{ inputs.update-caches }}
@@ -65,9 +70,15 @@ jobs:
       #  run: |
       #    ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe --help
       #  shell: pwsh
-      - name: Run SDE -help-long command
+      - name: Run SDE with SSE
+        if: ${{ inputs.instruction-set == 'SSE' }}
         run: |
           ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help-long
+        shell: pwsh
+      - name: Run SDE -help-long command
+        if: ${{ !contains('SSE', instruction-set) }}
+        run: |
+          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help
         shell: pwsh
       #- name: Run tests inside SDE
       #  if: ${{ inputs.run-tests }}
