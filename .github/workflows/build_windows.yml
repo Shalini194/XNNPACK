@@ -76,7 +76,7 @@ jobs:
           ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help-long
         shell: pwsh
       - name: Run SDE -help-long command
-        if: ${{ !contains('SSE', instruction-set) }}
+        if: ${{ !contains('SSE', inputs.instruction-set) }}
         run: |
           ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help
         shell: pwsh
