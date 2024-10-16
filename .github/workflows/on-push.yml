@@ -18,4 +18,4 @@ jobs:
 
   build-windows-test:
     if: ${{ inputs.workflow-choice == 'build-windows' }}
-    uses: ./.github/workflows/build-windows.yml
+    uses: ./.github/workflows/build_windows.yml
