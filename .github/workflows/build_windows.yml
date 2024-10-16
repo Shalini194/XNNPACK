@@ -15,7 +15,7 @@ on:
         type: boolean
       instruction-set:
         description: 'Instruction set'
-        default: "SSE"
+        default: "AVX"
         required: false
         type: string
 
@@ -75,7 +75,7 @@ jobs:
         run: |
           ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help-long
         shell: pwsh
-      - name: Run SDE -help-long command
+      - name: Run SDE -help command
         if: ${{ !contains('SSE', inputs.instruction-set) }}
         run: |
           ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help
