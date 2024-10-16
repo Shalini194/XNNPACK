@@ -4,18 +4,8 @@ on:
   push:
     branches-ignore:
       - master
-    inputs:
-      workflow-choice:
-        description: 'Which workflow to run? (build or build-windows)'
-        required: true
-        default: 'build-windows'
-        type: string
+  workflow_dispatch:
 
 jobs:
   build-and-test:
-    if: ${{ inputs.workflow-choice == 'build' }}
-    uses: ./.github/workflows/build.yml
-
-  build-windows-test:
-    if: ${{ inputs.workflow-choice == 'build-windows' }}
     uses: ./.github/workflows/build_windows.yml
