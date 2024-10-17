@@ -1,18 +1,13 @@
-name: Test SDE 
+name: Test Manual Workflow
 
 on:
   push:
     branches-ignore:
       - master
   workflow_dispatch:
-    #inputs:
-    #  instruction-set:
-    #    description: 'Instruction set (e.g., AVX512F, AVX512SKX, etc.).'
-    #    required: true
-    #    default: 'ALL'  # Optionally set a default value
+
 jobs:
-  build-run-sde-all:
-    uses: ./.github/workflows/run-sde_all.yml
-    #with:
-    #  instruction-set: ${{ github.event.inputs.instruction-set }}
-    #if: ${{ github.event.inputs.instruction-set == 'ALL' }}
+  build-and-test:
+    uses: ./.github/workflows/build_windows.yml
+  
+
