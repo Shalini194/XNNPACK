@@ -6,6 +6,11 @@ on:
       - master
   workflow_dispatch:
     inputs:
+      update-caches:
+        description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
+        default: false
+        required: false
+        type: boolean
       sde-processors:
         description: 'Pick a SDE Processors'
         required: true
