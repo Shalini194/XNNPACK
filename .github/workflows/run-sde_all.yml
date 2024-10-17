@@ -56,13 +56,18 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz      
   
-  run-sde:
+  build-sde-skl:
     runs-on: windows-latest
     needs: setup-sde  # This job depends on the setup-sde job
-    strategy:
-      matrix:
-        architecture: [skl, cnl, icl, skx]
     steps:
-      - name: Run SDE for ${{ matrix.architecture | upper }}
+      - name: Run SDE for SKL
         run: |
-          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -- -${{ matrix.architecture }} ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -- -skl ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+  
+  build-sde-cnl:
+    runs-on: windows-latest
+    needs: setup-sde  # This job depends on the setup-sde job
+    steps:
+      - name: Run SDE for CNL
+        run: |
+          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -- -cnl ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
