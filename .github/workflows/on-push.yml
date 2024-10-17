@@ -6,6 +6,6 @@ on:
       - master
   workflow_dispatch:
 
-jobs:
-  build-and-test:
-    uses: ./.github/workflows/build_windows.yml
+jobs:  
+  build-and-test-sde:
+    uses: ./.github/workflows/run-sde_all.yml
