@@ -5,16 +5,10 @@ on:
     branches-ignore:
       - master
   workflow_dispatch:
-    inputs:
-      instruction-set:
-        description: 'Instruction set (e.g., SSE, AVX, AVX512F, etc.).'
-        required: true
-        default: ALL
-        type: string
 
 jobs:
   build-run-sde-all:
     uses: ./.github/workflows/run-sde_all.yml
     with:
-      instruction-set: ${{ inputs.instruction-set || 'ALL' }}
+      instruction-set: ALL
     if: ${{ inputs.instruction-set == 'ALL' }}
