@@ -8,11 +8,7 @@ on:
         required: true
         default: ALL
         type: string
-  workflow_run:
-    workflows: ["Test Latest Push"]
-    types:
-      - completed
-      
+
 jobs:
   build-run-sde-all:
     uses: ./.github/workflows/run_sde_all.yml
