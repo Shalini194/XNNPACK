@@ -1,4 +1,4 @@
-name: Main Workflow
+name: Test SDE 
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-run-sde-all:
-    uses: ./.github/workflows/run_sde_all.yml
+    uses: ./.github/workflows/run-sde_all.yml
     with:
       instruction-set: ${{ inputs.instruction-set || 'ALL' }}
     if: ${{ inputs.instruction-set == 'ALL' }}
