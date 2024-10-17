@@ -1,6 +1,9 @@
 name: Main Workflow
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
     inputs:
       instruction-set:
@@ -13,5 +16,5 @@ jobs:
   build-run-sde-all:
     uses: ./.github/workflows/run_sde_all.yml
     with:
-      instruction-set: ${{ inputs.instruction-set }}
-    if: ${{ contains('ALL', inputs.instruction-set) }}
+      instruction-set: ${{ inputs.instruction-set || 'ALL' }}
+    if: ${{ inputs.instruction-set == 'ALL' }}
