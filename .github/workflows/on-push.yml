@@ -12,8 +12,6 @@ on:
         default: 'ALL'  # Optionally set a default value
 
 jobs:  
-  build-and-test-sde:
-    uses: ./.github/workflows/run-sde_all.yml
-    with:
-      sde-processors: ${{ inputs.sde-processors }}
+  build-and-test-sde:    
     if: ${{ inputs.sde-processors == 'ALL' }}
+    uses: ./.github/workflows/run-sde_all.yml
