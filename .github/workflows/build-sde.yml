@@ -1,0 +1,17 @@
+name: Main Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      instruction-set:
+        description: 'Instruction set (e.g., SSE, AVX, AVX512F, etc.).'
+        required: true
+        default: ALL
+        type: string
+
+jobs:
+  build-run-sde-all:
+    uses: ./.github/workflows/run_sde_all.yml
+    with:
+      instruction-set: ${{ inputs.instruction-set }}
+    if: ${{ contains('ALL', inputs.instruction-set) }}
