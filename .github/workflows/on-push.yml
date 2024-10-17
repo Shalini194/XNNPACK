@@ -477,3 +477,193 @@ jobs:
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -spr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
+
+  build-and-test-sde-emr:
+    runs-on: windows-latest
+    if: ${{ inputs.sde-processor == 'Emerald_Rapids' || inputs.sde-processor == 'ALL' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Download Intel SDE using curl 
+        run: |
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Extract Intel SDE
+        shell: bash
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+      - name: Run tests using Intel SDE Emerald_Rapids Processor
+        if: ${{ inputs.run-tests }}
+        run: |
+          ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -emr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
+
+  build-and-test-sde-gnr:
+    runs-on: windows-latest
+    if: ${{ inputs.sde-processor == 'Granite_Rapids' || inputs.sde-processor == 'ALL' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Download Intel SDE using curl 
+        run: |
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Extract Intel SDE
+        shell: bash
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+      - name: Run tests using Intel SDE Granite_Rapids Processor
+        if: ${{ inputs.run-tests }}
+        run: |
+          ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -gnr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
+
+  build-and-test-sde-srf:
+    runs-on: windows-latest
+    if: ${{ inputs.sde-processor == 'Sierra_Forest' || inputs.sde-processor == 'ALL' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Download Intel SDE using curl 
+        run: |
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Extract Intel SDE
+        shell: bash
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+      - name: Run tests using Intel SDE Sierra_Forest Processor
+        if: ${{ inputs.run-tests }}
+        run: |
+          ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -srf -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
+
+  build-and-test-sde-arl:
+    runs-on: windows-latest
+    if: ${{ inputs.sde-processor == 'Arrow_Lake' || inputs.sde-processor == 'ALL' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Download Intel SDE using curl 
+        run: |
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Extract Intel SDE
+        shell: bash
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+      - name: Run tests using Intel SDE Arrow_Lake Processor
+        if: ${{ inputs.run-tests }}
+        run: |
+          ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -arl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
+
+  build-and-test-sde-lnl:
+    runs-on: windows-latest
+    if: ${{ inputs.sde-processor == 'Lunar_Lake' || inputs.sde-processor == 'ALL' }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Download Intel SDE using curl 
+        run: |
+          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Extract Intel SDE
+        shell: bash
+        run: |
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+      - name: Run tests using Intel SDE Lunar_Lake Processor
+        if: ${{ inputs.run-tests }}
+        run: |
+          ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -lnl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
