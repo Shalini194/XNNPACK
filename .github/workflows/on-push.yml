@@ -6,20 +6,25 @@ on:
       - master
   workflow_dispatch:
     inputs:
+      run-tests:
+        description: 'Whether to also run unit tests where possible.'
+        default: true
+        required: false
+        type: boolean
       update-caches:
         description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
         default: false
         required: false
         type: boolean
-      sde-processors:
-        description: 'Pick a SDE Processors'
+      sde-processor:
+        description: 'Pick a SDE Processor to run tests'
         required: true
-        default: 'SKL'  # Optionally set a default value
+        default: 'Skylake'  # Optionally set a default value
 
 jobs:  
   build-and-test-sde-skl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'SKL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Skylake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -42,26 +47,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for SKL
+      - name: Run tests using Intel SDE Skylake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -skl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
   
   build-and-test-sde-cnl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'CNL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Cannon_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -84,26 +85,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for CNL
+      - name: Run tests using Intel SDE Cannon_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -cnl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-icl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'ICL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Ice Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -126,26 +123,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for ICL
+      - name: Run tests using Intel SDE Ice Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -icl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-skx:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'SKX' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Skylake_server' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -168,26 +161,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for SKX
+      - name: Run tests using Intel SDE Skylake_server Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -skx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-clx:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'CLX' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Cascade_Lake ' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -210,26 +199,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for CLX
+      - name: Run tests using Intel SDE Cascade_Lake Processor 
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -clx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-cpx:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'CPX' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Cooper_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -252,26 +237,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for CPX
+      - name: Run tests using Intel SDE Cooper_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -cpx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-icx:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'ICX' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Ice_Lake_server' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -294,26 +275,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for ICX
+      - name: Run tests using Intel SDE Ice_Lake_server Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -icx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-tgl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'TGL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Tiger_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -336,26 +313,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for TGL
+      - name: Run tests using Intel SDE Tiger_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -tgl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-adl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'ADL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Alder_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -378,26 +351,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for ADL
+      - name: Run tests using Intel SDE Alder_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -adl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-mtl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'MTL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Meteor_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -420,26 +389,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for MTL
+      - name: Run tests using Intel SDE Meteor_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -mtl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-rpl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'RPL' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Raptor_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -462,26 +427,22 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for RPL
+      - name: Run tests using Intel SDE Raptor_Lake Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -rpl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
   build-and-test-sde-spr:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processors == 'SPR' || inputs.sde-processors == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Sapphire_Rapids' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -504,19 +465,15 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
+      - name: Download Intel SDE using curl 
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
-        shell: bash
-        run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
+      - name: Extract Intel SDE
         shell: bash
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run SDE for SPR
+      - name: Run tests using Intel SDE Sapphire_Rapids Processor
+        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -spr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
