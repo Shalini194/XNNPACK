@@ -21,6 +21,7 @@ on:
 jobs: 
   build-sde-skl:
     runs-on: windows-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
@@ -57,9 +58,11 @@ jobs:
       - name: Run SDE for SKL
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -- -skl ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
   
   build-sde-cnl:
     runs-on: windows-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
@@ -96,3 +99,4 @@ jobs:
       - name: Run SDE for CNL
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -- -cnl ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
+        working-directory: ${{ github.workspace }}/build/windows/x64
