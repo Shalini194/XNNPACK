@@ -21,7 +21,6 @@ on:
 jobs: 
   build-sde-skl:
     runs-on: windows-latest
-    needs: setup-sde  # This job depends on the setup-sde job
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
@@ -61,7 +60,6 @@ jobs:
   
   build-sde-cnl:
     runs-on: windows-latest
-    needs: setup-sde  # This job depends on the setup-sde job
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
