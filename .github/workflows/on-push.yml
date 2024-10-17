@@ -1,9 +1,6 @@
 name: Test Latest Push
 
 on:
-  push:
-    branches-ignore:
-      - master
   workflow_dispatch:
     inputs:
       sde-processors:
