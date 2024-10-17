@@ -13,10 +13,10 @@ on:
         default: false
         required: false
         type: boolean
-      instruction-set:
-        description: 'Instruction set (e.g., AVX512F, AVX512SKX, etc.).'
-        required: true
-        type: string
+      #instruction-set:
+      #  description: 'Instruction set (e.g., AVX512F, AVX512SKX, etc.).'
+      #  required: true
+      #  type: string
 
 jobs:
   setup-sde:
