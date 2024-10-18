@@ -1,27 +1,24 @@
 name: Test Latest Push in Intel SDE
 
 on:
-  push:
-    branches-ignore:
-      - master
   workflow_dispatch:
     inputs:
       run-tests:
-        description: 'Whether to also run unit tests where possible.'
+        description: "Whether to also run unit tests where possible."
         default: true
         required: false
         type: boolean
       update-caches:
-        description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
+        description: "Whether to update the `ccache` or `bazel` caches, where possible."
         default: false
         required: false
         type: boolean
       sde-processor:
-        description: 'Pick a SDE Processor to run tests'
+        description: "Pick a SDE Processor to run tests"
         required: true
-        default: 'Skylake'  # Optionally set a default value
+        default: "Skylake" # Optionally set a default value
 
-jobs:  
+jobs:
   build-and-test-sde-skl:
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Skylake' || inputs.sde-processor == 'ALL' }}
@@ -47,19 +44,19 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Skylake Processor
         if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -skl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
-  
+
   build-and-test-sde-cnl:
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Cannon_Lake' || inputs.sde-processor == 'ALL' }}
@@ -85,13 +82,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Cannon_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -100,7 +97,7 @@ jobs:
 
   build-and-test-sde-icl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processor == 'Ice Lake' || inputs.sde-processor == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Ice_Lake' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -123,14 +120,14 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run tests using Intel SDE Ice Lake Processor
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Run tests using Intel SDE Ice_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -icl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
@@ -161,13 +158,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Skylake_server Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -199,14 +196,14 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
-      - name: Run tests using Intel SDE Cascade_Lake Processor 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
+      - name: Run tests using Intel SDE Cascade_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -clx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
@@ -237,13 +234,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Cooper_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -275,13 +272,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Ice_Lake_server Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -313,13 +310,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Tiger_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -351,13 +348,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Alder_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -389,13 +386,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Meteor_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -427,13 +424,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Raptor_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -465,13 +462,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Sapphire_Rapids Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -503,13 +500,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Emerald_Rapids Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -541,13 +538,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Granite_Rapids Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -579,13 +576,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Sierra_Forest Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -617,13 +614,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Arrow_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
@@ -655,13 +652,13 @@ jobs:
         env:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
-      - name: Download Intel SDE using curl 
+      - name: Download Intel SDE using curl
         run: |
           curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Extract Intel SDE
         shell: bash
         run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz 
+          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Lunar_Lake Processor
         if: ${{ inputs.run-tests }}
         run: |
