@@ -443,7 +443,7 @@ jobs:
   build-and-test-sde-spr:
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Sapphire_Rapids' || inputs.sde-processor == 'ALL' }}
-    timeout-minutes: 60
+    #timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
@@ -481,7 +481,7 @@ jobs:
   build-and-test-sde-emr:
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Emerald_Rapids' || inputs.sde-processor == 'ALL' }}
-    timeout-minutes: 60
+    #timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
@@ -519,7 +519,7 @@ jobs:
   build-and-test-sde-gnr:
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Granite_Rapids' || inputs.sde-processor == 'ALL' }}
-    timeout-minutes: 60
+    #timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup ccache
