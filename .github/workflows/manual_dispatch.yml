@@ -1,6 +1,9 @@
 name: Test Latest Push in Intel SDE
 
 on:
+  push:
+    branches-ignore:
+      - master
   workflow_dispatch:
     inputs:
       run-tests:
