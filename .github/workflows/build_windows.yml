@@ -1,30 +1,19 @@
-name: Build and Run Tests
+name: Build Windows (x86, x64) Tests
 
 on:
-  workflow_call:
+  push:
+    branches-ignore:
+      - master
+  workflow_dispatch:
     inputs:
-      run-tests:
-        description: 'Whether to also run unit tests where possible.'
-        default: true
-        required: false
-        type: boolean
       update-caches:
-        description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
+        description: "Whether to update the `ccache` or `bazel` caches, where possible."
         default: false
         required: false
         type: boolean
-      instruction-set:
-        description: 'Instruction set'
-        default: "AVX"
-        required: false
-        type: string
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}-${{ inputs.update-caches }}
-  cancel-in-progress: true
 
 jobs:
-  cmake-windows-x64:
+  build:
     runs-on: windows-latest
     timeout-minutes: 60
     steps:
@@ -34,55 +23,23 @@ jobs:
         with:
           key: ${{ github.job }}
           max-size: "500M"
-          save: ${{ inputs.update-caches }}
-      #- name: Install Ninja
-      #  uses: seanmiddleditch/gha-setup-ninja@master
-      #- name: Setup build environment
-      #  shell: bash
-      #  run: |
-      #    echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
-      #- name: Configure and build
-      #  run: scripts/build-windows-x64.cmd
-      #  shell: cmd
-      #  working-directory: ${{ github.workspace }}
-      #  env:
-      #    CFLAGS: "/UNDEBUG"
-      #    CXXFLAGS: "/UNDEBUG"
-      - name: Download SDE using curl 
-        run: |
-          curl -L -o sde-external-9.44.0-2024-08-22-win.tar.xz https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show current directory before extraction
+          save: ${{ github.event_name == 'workflow_dispatch' && inputs.update-caches || 'false' }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
         shell: bash
         run: |
-          pwd
-          ls -lah
-      - name: Extract SDE
-        shell: bash
-        run: |
-          tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
-      - name: Show extracted files
-        shell: bash
-        run: |
-          ls -lah
-      - name: List files in sde-external-9.44.0-2024-08-22-win
-        run: dir sde-external-9.44.0-2024-08-22-win 
-      #- name: Run SDE --help command
-      #  run: |
-      #    ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe --help
-      #  shell: pwsh
-      - name: Run SDE with SSE
-        if: ${{ inputs.instruction-set == 'SSE' }}
-        run: |
-          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help-long
-        shell: pwsh
-      - name: Run SDE -help command
-        if: ${{ !contains('SSE', inputs.instruction-set) }}
-        run: |
-          ${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe -help
-        shell: pwsh
-      #- name: Run tests inside SDE
-      #  if: ${{ inputs.run-tests }}
-      #  run: |
-      #    & "${{ github.workspace }}/sde-external-9.44.0-2024-08-22-win/sde.exe" -- ctest -C Release --output-on-failure --parallel $Env:NUMBER_OF_PROCESSORS
-      #  working-directory: ${{ github.workspace }}/build/windows/x64
-      #  shell: pwsh
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-x64.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: build/windows/x64/      
+
