@@ -1,9 +1,6 @@
 name: Build Windows (x86, x64) Tests
 
 on:
-  push:
-    branches-ignore:
-      - master
   workflow_call:
     inputs:
       update-caches:
