@@ -1,18 +1,8 @@
 name: Execute Windows (x86, x64) Tests with Intel SDE
 
-on:
-  workflow_run:
-    workflows: ["Build Windows (x86, x64) Tests"]
-    types:
-      - completed
-      
+on:      
   workflow_dispatch:
     inputs:
-      run-tests:
-        description: "Whether to also run unit tests where possible."
-        default: true
-        required: false
-        type: boolean
       sde-processor:
         description: "Pick a SDE CPU Processor to run tests"
         required: true
@@ -39,6 +29,8 @@ on:
           - Lunar Lake (Supports SSE, SSE2, SSSE3, SSE41, AVX, F16C, FMA3, AVX2, AVXVNNI, AVXVNNIINT8)
 
 jobs:
+  build:
+    uses:  ./.github/workflows/build_windows.yml
   test-sde-skl:
     needs: build
     runs-on: windows-latest
@@ -59,7 +51,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Skylake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -skl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -84,7 +75,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Cannon Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -cnl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -109,7 +99,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Ice Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -icl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -134,7 +123,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE SkyLake server Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -skx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -159,7 +147,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Cascade Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -clx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -184,7 +171,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Cooper Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -cpx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -209,7 +195,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Ice Lake server Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -icx -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -234,7 +219,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Tiger Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -tgl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -259,7 +243,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Alder Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -adl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -284,7 +267,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Meteor Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -mtl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -309,7 +291,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Raptor Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -rpl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -333,7 +314,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Sapphire Rapids Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -spr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -357,7 +337,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Emerald Rapids Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -emr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -381,7 +360,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Granite Rapids Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -gnr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -406,7 +384,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Sierra Forest Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -srf -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -431,7 +408,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Arrow Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -arl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
@@ -456,7 +432,6 @@ jobs:
         run: |
           tar -xf sde-external-9.44.0-2024-08-22-win.tar.xz
       - name: Run tests using Intel SDE Lunar Lake Processor
-        if: ${{ inputs.run-tests }}
         run: |
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -lnl -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64

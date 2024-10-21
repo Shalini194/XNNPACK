@@ -4,10 +4,10 @@ on:
   push:
     branches-ignore:
       - master
-  workflow_dispatch:
+  workflow_call:
     inputs:
       update-caches:
-        description: "Whether to update the `ccache` or `bazel` caches, where possible."
+        description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
         default: false
         required: false
         type: boolean
@@ -43,5 +43,3 @@ jobs:
           name: build-artifacts
           path: build/windows/x64/      
 
-  sde-test:
-    uses: ./.github/workflows/sde-test.yml
