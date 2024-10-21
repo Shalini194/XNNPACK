@@ -20,6 +20,12 @@ on:
         description: "Pick a SDE Processor to run tests"
         required: true
         default: "Skylake" # Optionally set a default value
+        type: choice
+        options:
+          - Skylake
+          - CascadeLake
+          - IceLake
+          - TigerLake
 
 jobs:
   build-and-test-sde-skl:
