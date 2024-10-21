@@ -22,10 +22,23 @@ on:
         default: "Skylake" # Optionally set a default value
         type: choice
         options:
-          - Skylake
-          - CascadeLake
-          - IceLake
-          - TigerLake
+          - Skylake Resolves flags like SSE, SSE2, SSE3, SSE41, AVX, F16C, FMA3, AVX2
+          - Cannon_Lake
+          - Ice_Lake
+          - Skylake_server
+          - Cascade_Lake 
+          - Cooper_Lake
+          - Ice_Lake_server
+          - Tiger_Lake
+          - Alder_Lake
+          - Meteor_Lake
+          - Raptor_Lake
+          - Sapphire_Rapids
+          - Emerald_Rapids
+          - Granite_Rapids
+          - Sierra_Forest
+          - Arrow_Lake
+          - Lunar_Lake
 
 jobs:
   build-and-test-sde-skl:
