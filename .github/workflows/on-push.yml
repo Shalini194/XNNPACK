@@ -21,7 +21,7 @@ on:
         required: true
         type: choice
         options:
-          - Skylake Resolves flags like SSE, SSE2, SSE3, SSE41, AVX, F16C, FMA3, AVX2
+          - Skylake (Supports SSE, SSE2, SSE3, SSE41, AVX, F16C, FMA3, AVX2)
           - Cannon_Lake
           - Ice_Lake
           - Skylake_server
@@ -42,7 +42,7 @@ on:
 jobs:
   build-and-test-sde-skl:
     runs-on: windows-latest
-    if: ${{ inputs.sde-processor == 'Skylake Resolves flags like SSE, SSE2, SSE3, SSE41, AVX, F16C, FMA3, AVX2' || inputs.sde-processor == 'ALL' }}
+    if: ${{ inputs.sde-processor == 'Skylake (Supports SSE, SSE2, SSE3, SSE41, AVX, F16C, FMA3, AVX2)' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
