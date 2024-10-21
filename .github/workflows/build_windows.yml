@@ -43,3 +43,5 @@ jobs:
           name: build-artifacts
           path: build/windows/x64/      
 
+  sde-test:
+    uses: ./.github/workflows/sde-test.yml
