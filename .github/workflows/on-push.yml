@@ -371,7 +371,7 @@ jobs:
           ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe -spr -- ctest -C Release --parallel $Env:NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
 
-  build-and-test-sde-emr:
+  test-sde-emr:
     needs: build
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Emerald Rapids (Supports SSE, SSE2, SSSE3, SSE41, AVX, F16C, FMA3, AVX2, AVX512F, AVX512SKX, AVX256SKX, AVX512VBMI, AVX512VNNI, AVX512VNNIGFNI, AVX256VNNI, AVX256VNNIINT8, AVXVNNI)' || inputs.sde-processor == 'ALL' }}
