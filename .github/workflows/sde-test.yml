@@ -30,7 +30,7 @@ on:
 
 jobs:
   build:
-    uses:  ./.github/workflows/build-windows.yml
+    uses:  ./.github/workflows/build_windows.yml
   test-sde-skl:
     needs: build
     runs-on: windows-latest
