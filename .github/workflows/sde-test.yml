@@ -30,18 +30,17 @@ on:
 
 jobs:
   build:
-    uses:  ./.github/workflows/build_windows.yml
+    uses:  ./.github/workflows/build-windows.yml
   test-sde-skl:
     needs: build
     runs-on: windows-latest
     if: ${{ inputs.sde-processor == 'Skylake (Supports SSE, SSE2, SSSE3, SSE41, AVX, F16C, FMA3, AVX2)' || inputs.sde-processor == 'ALL' }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -63,9 +62,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -87,9 +86,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -111,9 +110,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -135,9 +134,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -159,9 +158,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -183,9 +182,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -207,9 +206,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -231,9 +230,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -255,9 +254,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -279,9 +278,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -302,9 +301,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -325,9 +324,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -348,9 +347,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -372,9 +371,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -396,9 +395,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
@@ -420,9 +419,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/
       - name: Download Intel SDE using curl
         run: |
