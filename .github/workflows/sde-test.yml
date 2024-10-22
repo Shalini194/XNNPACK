@@ -61,7 +61,6 @@ jobs:
           - Arrow Lake 
           - Lunar Lake 
 
-    if: ${{ inputs.sde-processor == 'ALL' || inputs.sde-processor == matrix.sde-processor }}
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
@@ -79,6 +78,7 @@ jobs:
           tar -xf ${{ env.SDE_FILENAME }}
       
       - name: Run tests using Intel SDE
+        if: ${{ inputs.sde-processor == 'ALL' || inputs.sde-processor == matrix.sde-processor }}
         run: |
           SDE_PATH="${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe"
           SDE_OPTION=""
