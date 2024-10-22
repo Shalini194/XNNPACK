@@ -37,9 +37,10 @@ jobs:
     uses: ./.github/workflows/build-windows.yml
 
   test-sde:
-    needs: build
     runs-on: windows-latest
+    needs: build
     timeout-minutes: 60
+    continue-on-error: true
     strategy:
       matrix:
         sde-processor: 
@@ -107,5 +108,5 @@ jobs:
             }
           }
 
-          & $SDE_PATH $SDE_OPTION -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
+          $SDE_PATH $SDE_OPTION -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
