@@ -35,8 +35,7 @@ jobs:
           CFLAGS: "/UNDEBUG"
           CXXFLAGS: "/UNDEBUG"
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: build-artifacts-x64
           path: build/windows/x64/      
-
