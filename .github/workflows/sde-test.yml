@@ -43,24 +43,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        sde-processor: 
-          - Skylake 
-          - Cannon Lake 
-          - Ice Lake 
-          - SkyLake server 
-          - Cascade Lake 
-          - Cooper Lake 
-          - Ice Lake server
-          - Tiger Lake 
-          - Alder Lake 
-          - Meteor Lake 
-          - Raptor Lake 
-          - Sapphire Rapids 
-          - Emerald Rapids 
-          - Granite Rapids
-          - Sierra Forest 
-          - Arrow Lake 
-          - Lunar Lake 
+        sde-processor: [-skl, -cnl, -icl, -skx, -clx, -cpx, -icx, -tgl, -adl, -mtl, -rpl, -spr, -emr, -gnr, -srf, -arl, -lnl] 
 
     steps:
       - name: Download Build Artifacts
@@ -79,34 +62,9 @@ jobs:
           tar -xf ${{ env.SDE_FILENAME }}
       
       - name: Run tests using Intel SDE
-        if: ${{ inputs.sde-processor == 'ALL' || inputs.sde-processor == matrix.sde-processor }}
         run: |
           $SDE_PATH = "${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe"
           $SDE_OPTION = ""
 
-          switch ("${{ matrix.sde-processor }}") {
-            "Skylake" { $SDE_OPTION = "-skl" }
-            "Cannon Lake" { $SDE_OPTION = "-cnl" }
-            "Ice Lake" { $SDE_OPTION = "-icl" }
-            "SkyLake server" { $SDE_OPTION = "-skx" }
-            "Cascade Lake" { $SDE_OPTION = "-clx" }
-            "Cooper Lake" { $SDE_OPTION = "-cpx" }
-            "Ice Lake server" { $SDE_OPTION = "-icx" }
-            "Tiger Lake" { $SDE_OPTION = "-tgl" }
-            "Alder Lake" { $SDE_OPTION = "-adl" }
-            "Meteor Lake" { $SDE_OPTION = "-mtl" }
-            "Raptor Lake" { $SDE_OPTION = "-rpl" }
-            "Sapphire Rapids" { $SDE_OPTION = "-spr" }
-            "Emerald Rapids" { $SDE_OPTION = "-emr" }
-            "Granite Rapids" { $SDE_OPTION = "-gnr" }
-            "Sierra Forest" { $SDE_OPTION = "-srf" }
-            "Arrow Lake" { $SDE_OPTION = "-arl" }
-            "Lunar Lake" { $SDE_OPTION = "-lnl" }
-            default {
-              Write-Host "No matching processor specified."
-              exit 1
-            }
-          }
-
-          $SDE_PATH $SDE_OPTION -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
+          $SDE_PATH ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
