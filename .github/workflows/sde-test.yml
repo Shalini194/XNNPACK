@@ -16,7 +16,6 @@ jobs:
     runs-on: windows-latest
     needs: build
     timeout-minutes: 60
-    continue-on-error: true
     strategy:
       matrix:
         sde-processor: [-skl, -cnl, -icl, -skx, -clx, -cpx, -icx, -tgl, -adl, -mtl, -rpl, -spr, -emr, -gnr, -srf, -arl, -lnl]
@@ -38,12 +37,12 @@ jobs:
         shell: bash
       
       - name: NUMBER_OF_PROCESSORS
-        run: echo $NUMBER_OF_PROCESSORS
-        shell: bash
+        run: Write-Host $NUMBER_OF_PROCESSORS
+        shell: pwsh
 
       - name: env NUMBER_OF_PROCESSORS
-        run: echo $Env:NUMBER_OF_PROCESSORS
-        shell: bash
+        run: Write-Host $Env:NUMBER_OF_PROCESSORS
+        shell: pwsh
 
       - name: Run tests using Intel SDE
         run: |
