@@ -6,31 +6,6 @@ env:
 
 on:      
   workflow_dispatch:
-    inputs:
-      sde-processor:
-        description: "Pick a SDE CPU Processor to run tests"
-        required: true
-        type: choice
-        default: "ALL"
-        options:
-          - ALL
-          - Skylake 
-          - Cannon Lake 
-          - Ice Lake 
-          - SkyLake server 
-          - Cascade Lake 
-          - Cooper Lake 
-          - Ice Lake server
-          - Tiger Lake 
-          - Alder Lake 
-          - Meteor Lake 
-          - Raptor Lake 
-          - Sapphire Rapids 
-          - Emerald Rapids 
-          - Granite Rapids
-          - Sierra Forest 
-          - Arrow Lake 
-          - Lunar Lake 
 
 jobs:
   build:
@@ -43,7 +18,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        sde-processor: [-skl, -cnl, -icl, -skx, -clx, -cpx, -icx, -tgl, -adl, -mtl, -rpl, -spr, -emr, -gnr, -srf, -arl, -lnl] 
+        sde-processor: [-skl, -cnl, -icl, -skx, -clx, -cpx, -icx, -tgl, -adl, -mtl, -rpl, -spr, -emr, -gnr, -srf, -arl, -lnl]
 
     steps:
       - name: Download Build Artifacts
@@ -57,14 +32,12 @@ jobs:
           curl -L -o ${{ env.SDE_FILENAME }} ${{ env.SDE_URL }}
           
       - name: Extract Intel SDE
-        shell: bash
         run: |
           tar -xf ${{ env.SDE_FILENAME }}
+        shell: bash
       
       - name: Run tests using Intel SDE
         run: |
           $SDE_PATH = "${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe"
-          $SDE_OPTION = ""
-
           $SDE_PATH ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
