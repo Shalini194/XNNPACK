@@ -39,5 +39,5 @@ jobs:
       
       - name: Run tests using Intel SDE
         run: |
-          ${{ SDE_PATH }} ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
+          ${{ env.SDE_PATH }} ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
