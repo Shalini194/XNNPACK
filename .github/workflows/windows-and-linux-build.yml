@@ -4,12 +4,45 @@ on:
   workflow_call:
     inputs:
       update-caches:
-        description: 'Whether to update the `ccache` or `bazel` caches, where possible.'
+        description: "Whether to update the `ccache` or `bazel` caches, where possible."
         default: false
         required: false
         type: boolean
 
 jobs:
+  cmake-windows-x86_64:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        arch: [x86, x64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ github.job }}
+          max-size: "500M"
+          save: ${{ inputs.update-caches }}
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Setup build environment
+        shell: bash
+        run: |
+          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
+      - name: Configure and build
+        run: scripts/build-windows-${{ matrix.arch }}.cmd
+        shell: cmd
+        working-directory: ${{ github.workspace }}
+        env:
+          CFLAGS: "/UNDEBUG"
+          CXXFLAGS: "/UNDEBUG"
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-windows-${{ matrix.arch }}
+          path: build/windows/${{ matrix.arch }}/
+
   cmake-linux-x86_64:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -32,37 +65,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-linux-x86_64
-          path: build/local 
-
-  cmake-windows-x86_64:
-    runs-on: windows-latest
-    timeout-minutes: 60
-    strategy:
-      matrix:
-        arch: [x86, x64]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ${{ github.job }}
-          max-size: "500M"
-          save: ${{ github.event_name == 'workflow_dispatch' && inputs.update-caches || 'false' }}
-      - name: Install Ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Setup build environment
-        shell: bash
-        run: |
-          echo "VCVARSALL=$(vswhere -products \* -latest -property installationPath)\\VC\\Auxiliary\\Build\\vcvarsall.bat" >> $GITHUB_ENV
-      - name: Configure and build
-        run: scripts/build-windows-${{ matrix.arch }}.cmd
-        shell: cmd
-        working-directory: ${{ github.workspace }}
-        env:
-          CFLAGS: "/UNDEBUG"
-          CXXFLAGS: "/UNDEBUG"
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts-${{ matrix.arch }}
-          path: build/windows/${{ matrix.arch }}/      
+          path: build/local
