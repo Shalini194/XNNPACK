@@ -39,9 +39,11 @@ jobs:
       
       - name: NUMBER_OF_PROCESSORS
         run: echo $NUMBER_OF_PROCESSORS
+        shell: bash
 
       - name: env NUMBER_OF_PROCESSORS
         run: echo $Env:NUMBER_OF_PROCESSORS
+        shell: bash
 
       - name: Run tests using Intel SDE
         run: |
