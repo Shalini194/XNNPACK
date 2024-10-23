@@ -3,6 +3,7 @@ name: Execute Windows x64 Tests with Intel SDE
 env:
   SDE_URL: https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
   SDE_FILENAME: sde-external-9.44.0-2024-08-22-win.tar.xz
+  SDE_PATH: ${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe
 
 on:      
   workflow_dispatch:
@@ -38,6 +39,5 @@ jobs:
       
       - name: Run tests using Intel SDE
         run: |
-          $SDE_PATH = "${{ github.workspace }}\sde-external-9.44.0-2024-08-22-win\sde.exe"
-          $SDE_PATH ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
+          ${{ SDE_PATH }} ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/windows/x64
