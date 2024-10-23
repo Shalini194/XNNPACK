@@ -64,7 +64,7 @@ jobs:
             tar -xf ${{ env.SDE_WINDOWS_FILENAME }}
 
           fi
-        shell: ${{ matrix.architecture == 'linux' && 'bash' || 'pwsh' }}
+        shell: ${{ matrix.architecture == 'linux-x86_64' && 'bash' || 'pwsh' }}
 
       - name: Set SDE PATH
         run: |
