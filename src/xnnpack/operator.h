@@ -150,7 +150,6 @@ struct xnn_operator {
   size_t group_input_channels;
   size_t group_output_channels;
   size_t channels;
-  size_t max_tokens;
 
   uint32_t pad_value;
 
@@ -356,6 +355,7 @@ struct xnn_operator {
       enum xnn_attention_logits_cap_type cap_type;
       struct xnn_attention_logits_cap_tanh_params cap_params;
     } attention;  // For attention operator.
+    const struct xnn_pack_lh_config* pack_lh_config;
   };
 
   struct compute_parameters compute[XNN_MAX_COMPUTE_INVOCATIONS];
@@ -412,6 +412,7 @@ struct xnn_operator {
     struct unpooling_context unpooling;
     struct vmulcaddc_context vmulcaddc;
     struct rope_context rope;
+    struct x32_pack_lh_context x32_pack_lh;
   } context;
 
   struct xnn_code_cache* code_cache;

@@ -429,6 +429,7 @@ SET(OPERATOR_SRCS
   src/operators/global-average-pooling-nwc.c
   src/operators/lut-elementwise-nc.c
   src/operators/max-pooling-nhwc.c
+  src/operators/pack-lh.c
   src/operators/reduce-nd.c
   src/operators/resize-bilinear-nchw.c
   src/operators/resize-bilinear-nhwc.c
@@ -474,6 +475,7 @@ SET(SUBGRAPH_SRCS
   src/subgraph/log.c
   src/subgraph/max-pooling-2d.c
   src/subgraph/negate.c
+  src/subgraph/pack-lh.c
   src/subgraph/reciprocal-square-root.c
   src/subgraph/reshape-helpers.c
   src/subgraph/scaled-dot-product-attention.c
@@ -517,6 +519,7 @@ SET(XNNPACK_SRCS
   src/configs/lut32norm-config.c
   src/configs/maxpool-config.c
   src/configs/pavgpool-config.c
+  src/configs/pack-lh-config.c
   src/configs/raddstoreexpminusmax-config.c
   src/configs/reduce-config.c
   src/configs/rmax-config.c
@@ -1509,7 +1512,6 @@ IF(XNNPACK_BUILD_TESTS)
       packing
       qs8-gavgpool-minmax-fp32
       qs8-gavgpool-minmax-rndnu
-      qs8-requantization
       qs8-rdsum-minmax-fp32
       qu8-rdsum
       qs8-rsum
@@ -1518,7 +1520,6 @@ IF(XNNPACK_BUILD_TESTS)
       qs8-vlrelu
       qu8-gavgpool-minmax-fp32
       qu8-gavgpool-minmax-rndnu
-      qu8-requantization
       qu8-vhswish
       qu8-vlrelu
       s8-ibilinear
@@ -1924,6 +1925,7 @@ IF(XNNPACK_BUILD_BENCHMARKS)
       bench/models/fp32-mobilenet-v2.cc
       bench/models/fp32-mobilenet-v3-large.cc
       bench/models/fp32-mobilenet-v3-small.cc
+      bench/models/qd8-attention.cc
       bench/models/qs8-mobilenet-v2.cc)
     SET_TARGET_PROPERTIES(models PROPERTIES CXX_EXTENSIONS YES)
     TARGET_LINK_LIBRARIES(models PRIVATE XNNPACK)
@@ -2035,7 +2037,6 @@ IF(XNNPACK_BUILD_BENCHMARKS)
       qs8-f32-vcvt
       qs8-gemm
       qs8-qc8w-gemm-fp32
-      qs8-requantization
       qu8-rdsum
       qs8-rsum
       qu8-rsum
@@ -2044,7 +2045,6 @@ IF(XNNPACK_BUILD_BENCHMARKS)
       qu8-gemm
       qu8-gemm-fp32
       qu8-gemm-rndnu
-      qu8-requantization
       qu8-vcvt
       x16-packw
       x32-packw

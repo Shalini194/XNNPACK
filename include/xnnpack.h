@@ -281,6 +281,8 @@ enum xnn_datatype {
   /// Quantized 4-bit signed integer with shared per-channel-block quantization
   /// parameters.
   xnn_datatype_qbint4 = 12,
+  /// IEEE754 single-precision packed floating-point.
+  xnn_datatype_pfp32 = 13,
 };
 
 /// Define a tensor-type Value and add it to a Subgraph.
@@ -1661,7 +1663,7 @@ XNN_DEPRECATED enum xnn_status xnn_define_prelu(
 /// Define a RoPE (Rotary Positional Embeddings) Node and add it to a Subgraph.
 ///
 /// @param subgraph - a Subgraph object that will own the created Node.
-/// @param max_tokens - maximum possible number of tokens (maximum sequence length) of the input/output tensors.
+/// @param max_tokens - deprecated.
 /// @param input_id - Value ID for the input tensor. The input tensor must be a 4D tensor defined in the @a subgraph
 ///                   with [batch, tokens, heads, channels] dimensions.
 /// @param weights_id - Value ID for the weights tensor. The weights tensor must be a 2D tensor defined in the
@@ -2949,8 +2951,6 @@ enum xnn_status xnn_run_convert_nc_f32_f16(
 enum xnn_status xnn_create_convert_nc_f32_qs8(
   float output_scale,
   int8_t output_zero_point,
-  int8_t output_min,
-  int8_t output_max,
   uint32_t flags,
   xnn_operator_t* convert_op_out);
 
@@ -2982,8 +2982,6 @@ enum xnn_status xnn_run_convert_nc_f32_qs8(
 enum xnn_status xnn_create_convert_nc_f32_qu8(
   float output_scale,
   uint8_t output_zero_point,
-  uint8_t output_min,
-  uint8_t output_max,
   uint32_t flags,
   xnn_operator_t* convert_op_out);
 
@@ -5234,7 +5232,6 @@ enum xnn_status xnn_setup_resize_bilinear2d_nhwc_u8(
   uint8_t* output);
 
 enum xnn_status xnn_create_rope_nthc_f16(
-  size_t max_tokens,
   uint32_t flags,
   xnn_operator_t* rope_op_out);
 
@@ -5253,7 +5250,6 @@ enum xnn_status xnn_setup_rope_nthc_f16(
   void* output);
 
 enum xnn_status xnn_create_rope_nthc_f32(
-  size_t max_tokens,
   uint32_t flags,
   xnn_operator_t* rope_op_out);
 
