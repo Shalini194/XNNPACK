@@ -25,7 +25,7 @@ jobs:
     continue-on-error: true
 
     steps:
-      - name: Download Build Artifacts
+      - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-${{ matrix.architecture }}
