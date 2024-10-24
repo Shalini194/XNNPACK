@@ -48,10 +48,6 @@ jobs:
           pwd
           ls -lah
 
-      - name: List files in sde-external-9.44.0-2024-08-22-win (Windows)
-        if: runner.os == 'Windows'
-        run: dir "$(basename "$SDE_WINDOWS_URL")" 
-
       - name: Set SDE PATH
         run: |
           if [ "${{ matrix.architecture }}" == "linux-x86_64" ]; then
@@ -76,7 +72,6 @@ jobs:
       - name: Run tests using Intel SDE (Windows)
         if: runner.os == 'Windows'
         run: |
-          & "${{ env.SDE_PATH }}" -help
-        shell: powershell
+           "${{ env.SDE_PATH }}" -help
         #working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
         #shell: bash
