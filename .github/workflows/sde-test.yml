@@ -73,5 +73,6 @@ jobs:
         if: runner.os == 'Windows'
         run: |
            "${{ env.SDE_PATH }}" -help
+        shell: cmd
         #working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
         #shell: bash
