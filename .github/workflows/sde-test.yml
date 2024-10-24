@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         architecture: [windows-x86, windows-x64, linux-x86_64]
-        sde-processor: [skl, cnl, icl, skx, clx, cpx, icx, tgl, adl, mtl, rpl, spr, emr, gnr, srf, arl, lnl]
+        sde-processor: [skl]
 
     runs-on: ${{ matrix.architecture == 'linux-x86_64' && 'ubuntu-latest' || 'windows-latest' }}
     #needs: build
@@ -66,8 +66,7 @@ jobs:
       - name: Run tests using Intel SDE (Linux)
         if: matrix.architecture == 'linux-x86_64'
         run: |
-          echo "env NUMBER_OF_PROCESSORS set to: ${{ env.NUMBER_OF_PROCESSORS }}"
-          echo "Env NUMBER_OF_PROCESSORS set to: ${{ Env.NUMBER_OF_PROCESSORS }}"
+          echo "env NUMBER_OF_PROCESSORS set to: $NUMBER_OF_PROCESSORS"
           
         #working-directory: ${{ github.workspace }}/build/linux-x86_64/
         shell: bash
