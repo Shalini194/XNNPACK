@@ -1,11 +1,10 @@
-name: Execute Windows and Linux (x86,x64) Tests with Intel SDE
+name: Execute Windows and Linux (x86, x64) Tests with Intel SDE
 
 env:
   SDE_WINDOWS_URL: https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
   SDE_WINDOWS_FILENAME: sde-external-9.44.0-2024-08-22-win.tar.xz
   SDE_LINUX_URL: https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-lin.tar.xz
   SDE_LINUX_FILENAME: sde-external-9.44.0-2024-08-22-linux.tar.xz
-  SDE_PATH: ""
 
 on:
   workflow_dispatch:
@@ -18,26 +17,7 @@ jobs:
     strategy:
       matrix:
         architecture: [windows-x86, windows-x64, linux-x86_64]
-        sde-processor:
-          [
-            -skl,
-            -cnl,
-            -icl,
-            -skx,
-            -clx,
-            -cpx,
-            -icx,
-            -tgl,
-            -adl,
-            -mtl,
-            -rpl,
-            -spr,
-            -emr,
-            -gnr,
-            -srf,
-            -arl,
-            -lnl,
-          ]
+        sde-processor: [skl, cnl, icl, skx, clx, cpx, icx, tgl, adl, mtl, rpl, spr, emr, gnr, srf, arl, lnl]
 
     runs-on: ${{ matrix.architecture == 'linux-x86_64' && 'ubuntu-latest' || 'windows-latest' }}
     needs: build
@@ -60,23 +40,26 @@ jobs:
           elif [[ "${{ matrix.architecture }}" == "windows-x86" || "${{ matrix.architecture }}" == "windows-x64" ]]; then
             echo "Downloading Windows Intel SDE"
             curl -LO ${{ env.SDE_WINDOWS_URL }}
-            tar -xf ${{ env.SDE_WINDOWS_FILENAME }}
+            tar -xf ${{ env.SDE_WINDOWS_FILENAME }} 
           fi
-        shell: ${{ matrix.architecture == 'linux-x86_64' && 'bash' || 'pwsh' }}
+        shell: bash
 
       - name: Set SDE PATH
         run: |
           if [ "${{ matrix.architecture }}" == "linux-x86_64" ]; then
-            SDE_PATH="${{ github.workspace }}/${{ env.SDE_LINUX_FILENAME%.tar.xz }}/sde"
+            SDE_LINUX_BASE="${{ env.SDE_LINUX_FILENAME%.tar.xz }}"
+            SDE_PATH="${{ github.workspace }}/${SDE_LINUX_BASE}/sde"
             echo "SDE_PATH set to: $SDE_PATH"
-            
           elif [[ "${{ matrix.architecture }}" == "windows-x86" || "${{ matrix.architecture }}" == "windows-x64" ]]; then
-            SDE_PATH="${{ github.workspace }}\\${{ env.SDE_WINDOWS_FILENAME%.tar.xz }}\\sde.exe"
+            SDE_WINDOWS_BASE="${{ env.SDE_WINDOWS_FILENAME%.tar.xz }}"
+            SDE_PATH="${{ github.workspace }}\\${SDE_WINDOWS_BASE}\\sde.exe"
             echo "SDE_PATH set to: $SDE_PATH"
           fi
+          echo "SDE_PATH=$SDE_PATH" >> $GITHUB_ENV  
         shell: bash
 
       - name: Run tests using Intel SDE
         run: |
-          ${{ env.SDE_PATH }} ${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
+          ${{ env.SDE_PATH }} -${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
         working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
+        shell: ${{ matrix.architecture == 'linux-x86_64' && 'bash' || 'pwsh' }}
