@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         architecture: [windows-x86, windows-x64, linux-x86_64]
-        sde-processor: [skl]
+        sde-processor: [skl, cnl, icl, skx, clx, cpx, icx, tgl, adl, mtl, rpl, spr, emr, gnr, srf, arl, lnl]
 
     runs-on: ${{ matrix.architecture == 'linux-x86_64' && 'ubuntu-latest' || 'windows-latest' }}
     #needs: build
