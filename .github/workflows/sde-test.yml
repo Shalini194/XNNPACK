@@ -23,11 +23,11 @@ jobs:
     continue-on-error: true
 
     steps:
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ matrix.architecture }}
-          path: build/${{ matrix.architecture }}/
+      #- name: Download Build Artifacts
+      #  uses: actions/download-artifact@v4
+      #  with:
+      #    name: build-artifacts-${{ matrix.architecture }}
+      #    path: build/${{ matrix.architecture }}/
 
       - name: Download Intel SDE
         run: |
