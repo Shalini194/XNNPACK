@@ -1,58 +1,63 @@
-name: Execute Windows and Linux (x86, x64) Tests with Intel SDE
+name: Execute Windows and Linux (x86, x64) Tests with Intel SDE Processors
 
 env:
   SDE_WINDOWS_URL: https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-win.tar.xz
-  SDE_WINDOWS_FILENAME: sde-external-9.44.0-2024-08-22-win.tar.xz
   SDE_LINUX_URL: https://downloadmirror.intel.com/831748/sde-external-9.44.0-2024-08-22-lin.tar.xz
-  SDE_LINUX_FILENAME: sde-external-9.44.0-2024-08-22-linux.tar.xz
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
-    uses: ./.github/workflows/windows-and-linux-build.yml
+  # build:
+  #   uses: ./.github/workflows/windows-and-linux-build.yml
 
   test-sde:
     strategy:
       matrix:
         architecture: [windows-x86, windows-x64, linux-x86_64]
-        sde-processor: [skl, cnl, icl, skx, clx, cpx, icx, tgl, adl, mtl, rpl, spr, emr, gnr, srf, arl, lnl]
+        sde-processor: [skl]
 
     runs-on: ${{ matrix.architecture == 'linux-x86_64' && 'ubuntu-latest' || 'windows-latest' }}
-    needs: build
+    #needs: build
     timeout-minutes: 60
     continue-on-error: true
 
     steps:
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts-${{ matrix.architecture }}
-          path: build/${{ matrix.architecture }}/
+      # - name: Download Build Artifacts
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifacts-${{ matrix.architecture }}
+      #     path: build/${{ matrix.architecture }}/
 
       - name: Download Intel SDE
         run: |
           if [ "${{ matrix.architecture }}" == "linux-x86_64" ]; then
             echo "Downloading Linux Intel SDE"
-            wget ${{ env.SDE_LINUX_URL }}
-            tar -xf ${{ env.SDE_LINUX_FILENAME }}
+            wget "$SDE_LINUX_URL"
+            tar -xf "$(basename "$SDE_LINUX_URL")"
           elif [[ "${{ matrix.architecture }}" == "windows-x86" || "${{ matrix.architecture }}" == "windows-x64" ]]; then
             echo "Downloading Windows Intel SDE"
-            curl -LO ${{ env.SDE_WINDOWS_URL }}
-            tar -xf ${{ env.SDE_WINDOWS_FILENAME }} 
+            curl -LO "$SDE_WINDOWS_URL"
+            tar -xf "$(basename "$SDE_WINDOWS_URL")" 
           fi
         shell: bash
+
+      - name: Show current directory after extraction
+        shell: bash
+        run: |
+          pwd
+          ls -lah
 
       - name: Set SDE PATH
         run: |
           if [ "${{ matrix.architecture }}" == "linux-x86_64" ]; then
-            SDE_LINUX_BASE=$(echo "${{ env.SDE_LINUX_FILENAME }}" | sed 's/.tar.xz//')
+            SDE_LINUX_BASE="$(basename "$SDE_LINUX_URL" | sed 's/.tar.xz//')"
             SDE_PATH="${{ github.workspace }}/${SDE_LINUX_BASE}/sde"
             echo "SDE_PATH set to: $SDE_PATH"
           elif [[ "${{ matrix.architecture }}" == "windows-x86" || "${{ matrix.architecture }}" == "windows-x64" ]]; then
-            SDE_WINDOWS_BASE=$(echo "${{ env.SDE_WINDOWS_FILENAME }}" | sed 's/.tar.xz//')
-            SDE_PATH="${{ github.workspace }}\\${SDE_WINDOWS_BASE}\\sde.exe"
+            SDE_WINDOWS_BASE="$(basename "$SDE_WINDOWS_URL" | sed 's/.tar.xz//')"
+            echo "SDE_WINDOWS_BASE set to: $SDE_WINDOWS_BASE"
+            SDE_PATH="${{ github.workspace }}/$SDE_WINDOWS_BASE/sde.exe"
             echo "SDE_PATH set to: $SDE_PATH"
           fi
           echo "SDE_PATH=$SDE_PATH" >> $GITHUB_ENV
@@ -60,6 +65,6 @@ jobs:
 
       - name: Run tests using Intel SDE
         run: |
-          ${{ env.SDE_PATH }} -${{ matrix.sde-processor }} -- ctest -C Release --parallel $NUMBER_OF_PROCESSORS
-        working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
-        shell: ${{ matrix.architecture == 'linux-x86_64' ? 'bash' : 'pwsh' }}
+          "${{ env.SDE_PATH }}" --help
+        #working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
+        #shell: bash
