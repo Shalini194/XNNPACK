@@ -1549,6 +1549,16 @@ typedef void (*xnn_x32_packx_ukernel_fn)(
     size_t x_stride,
     uint32_t* y);
 
+// PACKLH: PACK LH (input) tensor according to the parameters from the gemm
+// config.
+typedef void (*xnn_x32_pack_lh_ukernel_fn)(
+    size_t m, size_t k, size_t mr, size_t kr, size_t sr, size_t m_idx_start,
+    const uint32_t* lhs, size_t lhs_stride, uint32_t* lhs_packed);
+
+// PACKLH Size: Size of packed buffer required.
+typedef size_t (*xnn_x32_pack_lh_size_fn)(size_t m, size_t k, size_t mr,
+                                          size_t kr, size_t sr);
+
 // FILL: FILL array with value
 
 typedef void (*xnn_fill_ukernel_fn)(
@@ -2499,16 +2509,12 @@ typedef size_t (*xnn_init_binary_params_fn)(
 typedef size_t (*xnn_init_f16_qs8_cvt_params_fn)(
   struct xnn_f16_qs8_cvt_params params[XNN_MIN_ELEMENTS(1)],
   xnn_float16 scale,
-  int8_t output_zero_point,
-  int8_t output_min,
-  int8_t output_max);
+  int8_t output_zero_point);
 
 typedef size_t (*xnn_init_f32_qs8_cvt_params_fn)(
   struct xnn_f32_qs8_cvt_params params[XNN_MIN_ELEMENTS(1)],
   float scale,
-  int8_t output_zero_point,
-  int8_t output_min,
-  int8_t output_max);
+  int8_t output_zero_point);
 
 typedef size_t (*xnn_init_qs8_reduce_minmax_params_fn)(
   struct xnn_qs8_reduce_minmax_params params[XNN_MIN_ELEMENTS(1)],
@@ -2527,9 +2533,7 @@ typedef size_t (*xnn_init_qu8_reduce_minmax_params_fn)(
 typedef size_t (*xnn_init_f32_qu8_cvt_params_fn)(
   struct xnn_f32_qu8_cvt_params params[XNN_MIN_ELEMENTS(1)],
   float scale,
-  uint8_t output_zero_point,
-  uint8_t output_min,
-  uint8_t output_max);
+  uint8_t output_zero_point);
 
 typedef size_t (*xnn_init_s32_f32_cvt_params_fn)(
   struct xnn_s32_f32_cvt_params params[XNN_MIN_ELEMENTS(1)],
@@ -2973,7 +2977,7 @@ struct xnn_hmp_qp8gemm_bl_ukernel {
 
 // Largest GEMM/IGEMM MR used in init.c is 16 (x86 AVX512AMX).
 // Largest GEMM/IGEMM MR is 8 in e2e benchmarks.
-#define XNN_MAX_MR 16
+#define XNN_MAX_MR 32
 
 struct gemm_fused_ukernels {
   union {
