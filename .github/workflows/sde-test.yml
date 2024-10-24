@@ -68,7 +68,7 @@ jobs:
         run: |
           echo "Running tests on architecture: ${{ matrix.architecture }}"
           "${{ env.SDE_PATH }}" -help
-        working-directory: ${{ github.workspace }}/build/linux-x86_64/
+        #working-directory: ${{ github.workspace }}/build/linux-x86_64/
         shell: bash
 
       - name: Run tests using Intel SDE (Windows-x86 and Windows-x64)
@@ -76,7 +76,7 @@ jobs:
         run: |
            echo "Running tests on architecture: ${{ matrix.architecture }}"
            "${{ env.SDE_PATH }}" -help
-        working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
+        #working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
         shell: cmd
         #working-directory: ${{ github.workspace }}/build/${{ matrix.architecture }}
         #shell: bash
